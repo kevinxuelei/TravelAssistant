@@ -1,0 +1,51 @@
+//
+//  RouteCell.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/16.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "RouteCell.h"
+#import "Macros.h"
+
+@interface RouteCell ()
+
+@property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UILabel *placeLabel;
+@property (nonatomic, strong) UILabel *routeLabel;
+
+@end
+
+@implementation RouteCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        self.dateLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:self.dateLabel];
+        self.placeLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:self.placeLabel];
+        self.routeLabel = [[UILabel alloc] init];
+        [self.contentView addSubview:self.routeLabel];
+    }
+    return self;
+}
+
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    self.dateLabel.frame = CGRectMake(KVheight / 4, KVheight / 4, KVheight / 2, KVheight / 2);
+    self.dateLabel.layer.masksToBounds = YES;
+    self.dateLabel.layer.cornerRadius = self.dateLabel.frame.size.width / 2;
+    self.dateLabel.backgroundColor = [UIColor orangeColor];
+    self.dateLabel.textAlignment = NSTextAlignmentCenter;
+    self.dateLabel.textColor = [UIColor whiteColor];
+    
+    
+}
+
+@end

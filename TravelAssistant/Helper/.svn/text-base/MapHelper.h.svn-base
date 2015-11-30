@@ -1,0 +1,22 @@
+//
+//  MapHelper.h
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+@interface MapHelper : NSObject
+
+#pragma mark--- 获取单例
++ (MapHelper *)sharedMapHelper;
+
+#pragma mark--- 获取当前所在城市纬度
+- (CGFloat)getLatitudeWithCurrentPosition;
+#pragma mark--- 获取当前所在城市经度
+- (CGFloat)getLongitudeWithCurrentPosition;
+
+@end

@@ -1,0 +1,42 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "8D8BACD14BEFF334226302F000AD9AFFFFC49705",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : {
+
+    },
+    "58e7beb5-b28a-47a9-80d7-460340b3d733++4157" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : 0,
+    "8D8BACD14BEFF334226302F000AD9AFFFFC49705" : 0,
+    "58e7beb5-b28a-47a9-80d7-460340b3d733++4157" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D19CBE38-8BFB-42DB-80CD-B24A181EC84A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : "TravelAssistant\/",
+    "8D8BACD14BEFF334226302F000AD9AFFFFC49705" : "jack\/",
+    "58e7beb5-b28a-47a9-80d7-460340b3d733++4157" : "B%E6%AE%B5%E9%A1%B9%E7%9B%AE\/TravelAssistant\/Pods\/MJRefresh\/MJRefresh\/MJRefresh.bundle\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TravelAssistant",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TravelAssistant\/TravelAssistant.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/www.svnchina.com\/svn\/travelassistant",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58e7beb5-b28a-47a9-80d7-460340b3d733"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/www.svnchina.com\/svn\/travelassistant",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58e7beb5-b28a-47a9-80d7-460340b3d733++4157"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "git.oschina.net:wah.com\/TravelAssistant.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8D8BACD14BEFF334226302F000AD9AFFFFC49705"
+    }
+  ]
+}

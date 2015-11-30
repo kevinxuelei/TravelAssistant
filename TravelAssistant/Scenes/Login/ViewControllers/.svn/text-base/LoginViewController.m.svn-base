@@ -1,0 +1,70 @@
+//
+//  LoginViewController.m
+//  TravelAssistant
+//
+//  Created by lanou3g on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "LoginViewController.h"
+#import "RegisterViewController.h"
+
+@interface LoginViewController ()
+
+- (IBAction)leftButtonClecked:(UIButton *)sender;
+- (IBAction)rightButtonClecked:(UIButton *)sender;
+
+@property (strong, nonatomic) IBOutlet UITextField *userTextField;
+@property (strong, nonatomic) IBOutlet UITextField *passwordTextField;
+
+@property (strong, nonatomic) IBOutlet UIButton *weiboxButton;
+@property (strong, nonatomic) IBOutlet UIButton *weixinButton;
+@property (strong, nonatomic) IBOutlet UIButton *qqButton;
+
+
+@end
+
+@implementation LoginViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    
+    [self loginView];
+    
+}
+
+- (void)loginView{
+   
+    
+    self.weiboxButton.layer.cornerRadius = self.weiboxButton.frame.size.width / 2;
+    self.weiboxButton.layer.masksToBounds = YES;
+   
+    self.weixinButton.layer.cornerRadius = self.weiboxButton.frame.size.width / 2;
+    self.weixinButton.layer.masksToBounds = YES;
+    
+    self.qqButton.layer.cornerRadius = self.weiboxButton.frame.size.width / 2;
+    self.qqButton.layer.masksToBounds = YES;
+
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    [self.view endEditing:YES];
+    
+}
+
+- (IBAction)leftButtonClecked:(UIButton *)sender {
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
+    
+}
+
+- (IBAction)rightButtonClecked:(UIButton *)sender {
+    
+    RegisterViewController *reg = [[RegisterViewController alloc] init];
+    [self.navigationController pushViewController:reg animated:YES];
+    
+}
+@end

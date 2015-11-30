@@ -1,0 +1,244 @@
+//
+//  UserViewController.m
+//  TravelAssistant
+//
+//  Created by lanou3g on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "UserViewController.h"
+#import "LoginViewController.h"
+#import "OpinionViewController.h"
+
+@interface UserViewController () <UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView *table;
+@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic, strong) UIView *background;
+@end
+
+@implementation UserViewController
+
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self data];
+    [self loadTableView];
+}
+
+- (void)data{
+
+    self.array = [NSMutableArray array];
+    
+    NSMutableArray *arr1 = [[NSMutableArray alloc] initWithObjects:@"清空缓存", nil];
+    
+    [self.array addObject:arr1];
+    
+    NSMutableArray *arr2 = [[NSMutableArray alloc] initWithObjects:@"使用说明", @"鼓励我们", @"吐槽产品", @"推荐给朋友", nil];
+
+    [self.array addObject:arr2];
+    
+}
+
+- (void)loadTableView{
+
+    self.table = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
+    self.table.delegate = self;
+    self.table.dataSource = self;
+    [self.view addSubview:self.table];
+    [self.table registerClass:[UITableViewCell class] forCellReuseIdentifier:@"CELL"];
+    
+    self.table.tableHeaderView = [self headerView];
+    
+    self.table.separatorStyle = NO;
+    
+    
+    
+    }
+
+- (UIView *)headerView{
+    
+    UIView *headView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
+    
+    headView.backgroundColor = [UIColor orangeColor];
+    headView.alpha = 0.4;
+    
+    UIButton *backButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+    [backButton setImage:[UIImage imageNamed:@"back"] forState:(UIControlStateNormal)];
+    backButton.frame = CGRectMake(20, 20, 20, 20);
+    [backButton addTarget:self action:@selector(backButtonClecked:) forControlEvents:(UIControlEventTouchUpInside)];
+    [headView addSubview:backButton];
+    
+    UIButton *loginButton = [UIButton buttonWithType:(UIButtonTypeSystem)];
+    loginButton.frame = CGRectMake(0, 0, 70, 70);
+    loginButton.center = headView.center;
+    loginButton.backgroundColor = [UIColor redColor];
+    [headView addSubview:loginButton];
+    [loginButton addTarget:self action:@selector(loginClecked:) forControlEvents:UIControlEventTouchUpInside];
+    
+    loginButton.layer.cornerRadius = loginButton.frame.size.width / 2;
+    loginButton.layer.masksToBounds = YES;
+    
+    UILabel *loginLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(loginButton.frame) + 5, self.view.frame.size.width, 30)];
+    loginLabel.font = [UIFont systemFontOfSize:13.0];
+    loginLabel.text = @"点击头像登录";
+    loginLabel.textAlignment = NSTextAlignmentCenter;
+    [headView addSubview:loginLabel];
+    
+    return headView;
+    
+
+}
+
+- (void)backButtonClecked:(UIButton *)but{
+
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    
+}
+
+- (void)loginClecked:(UIButton *)but{
+
+    LoginViewController *loginView = [[LoginViewController alloc] init];
+    UINavigationController *navigationLogin = [[UINavigationController alloc] initWithRootViewController:loginView];
+    [self presentViewController:navigationLogin animated:YES completion:nil];
+
+}
+
+#pragma mark ---- tableView代理方法
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    
+    //下拉坐标
+    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
+    
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CELL" forIndexPath:indexPath];
+    
+    cell.textLabel.text = self.array[indexPath.section][indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
+    
+    return cell;
+
+}
+
+
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    return [self.array[section] count];
+
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+
+    return 2;
+
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
+
+    return 40;
+    
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
+
+    UIView *sectionView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 40)];
+    
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, 5, self.view.frame.size.width - 20, 30)];
+    label.font = [UIFont systemFontOfSize:13.0];
+    label.alpha = 0.6;
+
+    [sectionView addSubview:label];
+    
+    switch (section) {
+        case 0:
+            label.text = @"设置";
+            break;
+        case 1:
+            label.text = @"帮助及反馈";
+            break;
+            
+        default:
+            break;
+    }
+    
+    return sectionView;
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
+    
+    if (indexPath.section == 0) {
+        
+        [self clear];
+        
+    } else if (indexPath.section == 1){
+    
+        switch (indexPath.row) {
+            case 0:
+                [self explain];
+                break;
+            case 1:
+                [self hortative];
+                break;
+            case 2:
+                [self opinion];
+                break;
+            case 3:
+                [self recommend];
+                break;
+                
+            default:
+                break;
+        }
+    
+    }
+
+}
+
+
+- (void)clear{
+
+    NSLog(@"清除缓存");
+    
+}
+
+- (void)explain{
+    
+    NSLog(@"使用说明");
+    
+}
+
+- (void)hortative{
+    
+    NSLog(@"鼓励我们");
+    
+}
+
+
+- (void)opinion{
+    
+//    NSLog(@"吐槽产品");
+    OpinionViewController *opinion = [[OpinionViewController alloc] init];
+    [self.navigationController pushViewController:opinion animated:YES];
+    
+}
+
+- (void)recommend{
+    
+    NSLog(@"推荐给朋友");
+    
+}
+
+@end

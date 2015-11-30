@@ -1,0 +1,58 @@
+//
+//  RouteViewController.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/15.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "RouteViewController.h"
+#import "RouteCell.h"
+#import "Macros.h"
+
+@interface RouteViewController ()<UITableViewDataSource, UITableViewDelegate>
+
+@property (nonatomic, strong) UITableView *tableView;
+
+@end
+
+@implementation RouteViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    self.navigationController.navigationBar.alpha = 0.5;
+    self.view.backgroundColor = [UIColor cyanColor];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"iconfont-shouye"] style:UIBarButtonItemStylePlain target:self action:@selector(didClickedLeftBarButton)];
+    self.navigationItem.leftBarButtonItem.tintColor = [UIColor orangeColor];
+    
+}
+// pop回上个VC
+- (void)didClickedLeftBarButton
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark--- 加载tableView，及代理方法
+- (void)loadTableView
+{
+    self.tableView = [[UITableView alloc] initWithFrame:[UIScreen mainScreen].bounds style:UITableViewStylePlain];
+    
+}
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

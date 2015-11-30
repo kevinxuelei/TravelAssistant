@@ -1,0 +1,65 @@
+//
+//  SectionHeadView.m
+//  TravelAssistant
+//
+//  Created by lanou3g on 15/11/14.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "SectionHeadView.h"
+#import <UIImageView+WebCache.h>
+@interface SectionHeadView()
+
+@property (nonatomic, strong) UIImageView *userImage;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+
+@end
+
+@implementation SectionHeadView
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
+    if (self) {
+        _userImage = [[UIImageView alloc] init];
+        _titleLabel = [[UILabel alloc] init];
+        _timeLabel = [[UILabel alloc] init];
+    }
+    [self addSubview:_userImage];
+    [self addSubview:_titleLabel];
+    [self addSubview:_timeLabel];
+    return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    _userImage.frame = CGRectMake(10, (self.frame.size.height - 35) / 2, 40, 40);
+    _userImage.backgroundColor = [UIColor redColor];
+    
+    _titleLabel.frame = CGRectMake(CGRectGetMaxX(self.userImage.frame) + 10, 10, self.frame.size.width - 50, 20);
+    _titleLabel.backgroundColor = [UIColor greenColor];
+    
+    _timeLabel.frame = CGRectMake(CGRectGetMaxX(self.userImage.frame) + 10, CGRectGetMaxY(self.titleLabel.frame) + 5, self.frame.size.width - 50, 20);
+    _timeLabel.backgroundColor = [UIColor blueColor];
+    
+}
+
+- (void)setUserModel:(UserInfoModel *)userModel {
+    [_userImage sd_setImageWithURL:[NSURL URLWithString:userModel.usericon]];
+    _titleLabel.text = userModel.planner_name;
+    _timeLabel.text = [NSString stringWithFormat:@"%@出发",userModel.format_date];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@end

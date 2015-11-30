@@ -1,0 +1,213 @@
+//
+//  MainRouteView.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "MainRouteView.h"
+#import "MainCollectinFlowLayout.h"
+#import "MainCollectionCell.h"
+#import "MainRouteModel.h"
+#import "Macros.h"
+#import "MapHelper.h"
+#import <AFNetworking.h>
+#import <MJRefresh.h>
+#import <UIKit/UIKit.h>
+#import <MBProgressHUD.h>
+
+@interface MainRouteView ()<UICollectionViewDataSource, UICollectionViewDelegate, UIScrollViewDelegate, MBProgressHUDDelegate>
+
+@property (nonatomic, strong) UICollectionView *collectionView;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+@property (nonatomic, assign) NSInteger page;
+@property (nonatomic, assign) CGFloat latitude;  // 纬度
+@property (nonatomic, assign) CGFloat longitude; // 经度
+@property (nonatomic, strong) NSIndexPath *indexPath;
+@property (nonatomic, strong) MBProgressHUD *hud;
+
+@end
+
+@implementation MainRouteView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        self.collectionView = [[UICollectionView alloc] initWithFrame:[UIScreen mainScreen].bounds collectionViewLayout:layout];
+        self.collectionView.delegate = self;
+        self.collectionView.dataSource = self;
+        self.collectionView.showsHorizontalScrollIndicator = NO;
+        self.collectionView.backgroundColor = [UIColor whiteColor];
+        [self addSubview:self.collectionView];
+        [self.collectionView registerClass:[MainCollectionCell class] forCellWithReuseIdentifier:@"MainCollectionCell"];
+        
+        self.hud = [MBProgressHUD showHUDAddedTo:self animated:YES];
+        [self addSubview:self.hud];
+        [self.hud show:YES];
+        self.hud.color = [UIColor lightGrayColor];
+        self.hud.delegate = self;
+        CGPoint point = self.hud.center;
+        point.y -= 100;
+        self.hud.center = point;
+    }
+    return self;
+}
+- (void)setUser_id:(NSString *)user_id
+{
+    _user_id = user_id;
+    //    [self setupRefresh];
+    [self loadNewData];
+}
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    MainCollectinFlowLayout *layout = [[MainCollectinFlowLayout alloc] init];
+    self.collectionView.frame = [UIScreen mainScreen].bounds;
+    self.collectionView.collectionViewLayout = layout;
+    
+}
+#pragma mark--- 请求数据
+- (void)requestMainRouteDataWithLatitude:(CGFloat)latitude Longitude:(CGFloat)longitude Page:(NSInteger)page UesrId:(NSString *)userid
+{
+    __weak typeof(self) pSelf = self;
+    // 拼接网址，并转码
+    NSString *urlString = [[NSString stringWithFormat:@"http://open.qyer.com/plan/route/get_list?app_installtime=1447226744&client_id=qyer_planner_ios&client_secret=e24e75dbf6fa3c49651f&delete_flag=0&ip=172.21.63.105&lat=%f&lon=%f&oauth_token=190d8f729a532219d1b606ccb60a72ec&page=%ld&pagesize=20&timestamp=1447327478&track_app_channel=App Store&track_app_version=1.4.5&track_device_info=iPhone 5s&track_deviceid=E928D450-E7D0-4E20-939E-1FCCF0742DB3&track_os=ios 9.1&track_user_id=%@&v=1", latitude, longitude, page, userid] stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+        NSArray *array = responseObject[@"data"];
+        for (NSDictionary *dic in array) {
+            MainRouteModel *model = [[MainRouteModel alloc] init];
+            [model setValuesForKeysWithDictionary:dic];
+            [pSelf.dataArray addObject:model];
+        }
+        [pSelf hudWasHidden:pSelf.hud];
+        [pSelf.collectionView reloadData];
+        [pSelf.collectionView.mj_header endRefreshing];
+        [pSelf.collectionView.mj_footer endRefreshing];
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+        
+        
+    }];
+    
+}
+#pragma mark--- 刷数据
+- (void)setupRefresh
+{
+    // 1.下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    __weak __typeof(self) weakSelf = self;
+    
+    // 设置回调（一旦进入刷新状态就会调用这个refreshingBlock）
+    self.collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf loadNewData];
+    }];
+    
+    // 马上进入刷新状态
+    [self.collectionView.mj_header beginRefreshing];
+    
+    // 上拉加载
+    //    self.collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+    //        [weakSelf loadMoreData];
+    //    }];
+    
+}
+#pragma mark 下拉刷新数据
+- (void)loadNewData
+{
+    self.dataArray = [NSMutableArray array];
+    self.page = 1;
+    // 1.添加数据
+    [self requestMainRouteDataWithLatitude:self.latitude Longitude:self.longitude Page:self.page UesrId:self.user_id];
+    
+}
+#pragma mark 上拉加载更多数据
+- (void)loadMoreData
+{
+    self.page++;
+    // 1.添加数据
+    [self requestMainRouteDataWithLatitude:self.latitude Longitude:self.longitude Page:self.page UesrId:self.user_id];
+}
+
+#pragma mark--- collectionView代理方法
+// cell的个数
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return self.dataArray.count;
+}
+// cell的样式
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.indexPath = indexPath;
+    MainCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"MainCollectionCell" forIndexPath:indexPath];
+    
+    cell.layer.masksToBounds = NO;
+    cell.layer.contentsScale = [UIScreen mainScreen].scale;
+    cell.layer.shadowOpacity = 0.75f;
+    cell.layer.shadowRadius = 4.0f;
+    cell.layer.shadowOffset = CGSizeMake(0,2);
+    cell.layer.shadowPath = [UIBezierPath bezierPathWithRect:cell.bounds].CGPath;
+    //设置缓存
+    cell.layer.shouldRasterize = YES;
+    //设置抗锯齿边缘
+    cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
+    
+    typeof(cell) pCell = cell; // 重定义，防止循环引用
+    typeof(self) pSelf = self;
+    cell.block = ^() {
+        pCell.layer.masksToBounds = YES;
+        pCell.layer.shadowOpacity = 0;
+        [pSelf performSelector:@selector(changeCellLayer:) withObject:pCell afterDelay:0.97f];
+    };
+    
+    cell.cellSize = cell.bounds.size;
+    cell.model = self.dataArray[indexPath.row];
+    
+    return cell;
+}
+- (void)changeCellLayer:(UICollectionViewCell *)cell
+{
+    cell.layer.masksToBounds = NO;
+    cell.layer.shadowOpacity = 0.75f;
+}
+// cell的点击方法
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    [collectionView deselectItemAtIndexPath:indexPath animated:NO];
+    if (self.delegate &&[self.delegate respondsToSelector:@selector(showRouteViewControllerWithPlanId:)]) {
+        [self.delegate showRouteViewControllerWithPlanId:[self.dataArray[indexPath.row] routeId]];
+    }
+}
+// scrollView代理方法
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if ([scrollView isEqual:self.collectionView]) {
+        CGFloat x = self.collectionView.contentOffset.x; // 获取偏移量的x值
+        CGFloat index = x / (kVwidth * 0.6 + 50);// 获取当前为第几个cell
+        NSInteger integer = index + 0.5;
+        //        NSLog(@"偏移量的x值:%f；%f；应该移动到第%ld个cell",  x, index, integer);
+        [self.collectionView setContentOffset:CGPointMake(integer * (kVwidth * 0.6 + 50), 0) animated:YES];
+    }
+}
+
+#pragma mark--- 经纬度懒加载
+- (CGFloat)latitude
+{
+    return [[MapHelper sharedMapHelper] getLatitudeWithCurrentPosition];
+}
+- (CGFloat)longitude
+{
+    return [[MapHelper sharedMapHelper] getLongitudeWithCurrentPosition];
+}
+#pragma mark--- MBPrograssHUD代理协议
+- (void)hudWasHidden:(MBProgressHUD *)hud
+{
+    [hud removeFromSuperview];
+    hud = nil;
+}
+
+
+
+
+@end

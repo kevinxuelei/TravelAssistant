@@ -1,0 +1,9 @@
+platform :ios,’9.0’
+pod ’SDWebImage’
+pod ‘AFNetworking’
+pod ‘MJRefresh’
+pod ‘MBProgressHUD’
+pod ‘AVOSCloud’
+pod ‘AVOSCloudIM’
+pod ‘AVOSCloudCrashReporting’
+pod ‘LeanCloudSocial’

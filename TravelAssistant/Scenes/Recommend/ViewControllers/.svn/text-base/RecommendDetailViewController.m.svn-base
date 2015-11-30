@@ -1,0 +1,161 @@
+//
+//  RecommendDetailViewController.m
+//  TravelAssistant
+//
+//  Created by lanou3g on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "RecommendDetailViewController.h"
+#import "RecommendDetailTableViewCell.h"
+#import "ReconmendTimeTableViewCell.h"
+#import "ReconmmendHotelTableViewCell.h"
+#import "HotelsModel.h"
+#import "ScenicModel.h"
+#import "TrafficsModel.h"
+#import "RecommendDetailModel.h"
+#import <AFNetworking.h>
+#import "SectionHeadView.h"
+
+
+@interface RecommendDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *dataArray;
+
+
+@end
+
+@implementation RecommendDetailViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self loadTableView];
+    [self loadData];
+}
+
+#pragma mark - 初始化tableView
+- (void)loadTableView {
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.rowHeight = 60;
+    
+    UIView *headView = [[UIView alloc] init];
+    headView.frame = CGRectMake(0, 0, self.view.frame.size.width, 180);
+    headView.backgroundColor = [UIColor redColor];
+    self.tableView.tableHeaderView = headView;
+    
+    [self.view addSubview:self.tableView];
+    [self.tableView registerClass:[RecommendDetailTableViewCell class] forCellReuseIdentifier:@"DetailTableViewCell"];
+    [self.tableView registerClass:[ReconmendTimeTableViewCell class] forCellReuseIdentifier:@"TimeTableViewCell"];
+    [self.tableView registerClass:[ReconmmendHotelTableViewCell class] forCellReuseIdentifier:@"HotelTableViewCell"];
+}
+
+#pragma mark - 加载数据
+- (void)loadData {
+    self.dataArray = [NSMutableArray array];
+
+
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"http://open.qyer.com/plan/route/someone?app_installtime=1447228203&client_id=qyer_planner_ios&client_secret=e24e75dbf6fa3c49651f&ip=172.21.56.76&lat=40.029259&limit=5&lon=116.337090&oauth_token=3e26325855856e39d033ec1ceadbd47d&page=1&planid=%ld&timestamp=1447291456&track_app_channel=App Store&track_app_version=1.4.5&track_device_info=ios device&track_deviceid=1B4337A0-6DF6-4C98-94D8-C1F4B7ACE26A&track_os=ios 9.0&track_user_id=7010309&v=1",self.plan_id];
+    NSLog(@"%ld",self.plan_id);
+    
+    NSString *urlString = [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+    [manager GET:urlString parameters:nil success:^(AFHTTPRequestOperation * _Nonnull operation, id  _Nonnull responseObject) {
+
+        NSDictionary *dict1 = [responseObject valueForKey:@"data"];
+        NSArray *array = [dict1 valueForKey:@"list"];
+        for (NSDictionary *dic in array) {
+            RecommendDetailModel *model = [[RecommendDetailModel alloc] init];
+            [model setValuesForKeysWithDictionary:dic];
+            [self.dataArray addObject:model];
+        }
+        [self.tableView reloadData];
+    } failure:^(AFHTTPRequestOperation * _Nullable operation, NSError * _Nonnull error) {
+    }];
+    
+
+}
+
+
+
+#pragma mark - 代理方法
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return self.dataArray.count;
+}
+
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [self.dataArray[section] hotels].count + [self.dataArray[section] scenics].count + [self.dataArray[section] traffics].count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < [self.dataArray[indexPath.section] traffics].count) {
+        ReconmendTimeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TimeTableViewCell" forIndexPath:indexPath];
+        cell.model = [self.dataArray[indexPath.section] traffics][indexPath.row];
+        cell.backgroundColor = [UIColor yellowColor];
+        return cell;
+    }else if (indexPath.row < [self.dataArray[indexPath.section] traffics].count + [self.dataArray[indexPath.section] scenics].count) {
+        RecommendDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailTableViewCell" forIndexPath:indexPath];
+        cell.scenicModel = [self.dataArray[indexPath.section] scenics][indexPath.row - [self.dataArray[indexPath.section] traffics].count];
+        cell.backgroundColor = [UIColor orangeColor];
+        return cell;
+    }else if (indexPath.row < [self.dataArray[indexPath.section] traffics].count + [self.dataArray[indexPath.section] scenics].count + [self.dataArray[indexPath.section] hotels].count) {
+        ReconmmendHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HotelTableViewCell" forIndexPath:indexPath];
+        cell.hotelModel = [self.dataArray[indexPath.section] hotels][indexPath.row - [self.dataArray[indexPath.section] traffics].count - [self.dataArray[indexPath.section] scenics].count];
+        cell.backgroundColor = [UIColor whiteColor];
+        return cell;
+    }
+//    for (TrafficsModel *model in [self.dataArray[indexPath.section] traffics]) {
+//        NSLog(@"%@", [self.dataArray[indexPath.section] traffics]);
+//        ReconmendTimeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TimeTableViewCell" forIndexPath:indexPath];
+//        cell.model = model;
+//        cell.backgroundColor = [UIColor yellowColor];
+//        return cell;
+//    }
+//    for (ScenicModel *model in [self.dataArray[indexPath.section] scenics]) {
+//        RecommendDetailTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailTableViewCell" forIndexPath:indexPath];
+//        cell.scenicModel = model;
+//        cell.backgroundColor = [UIColor orangeColor];
+//        return cell;
+//    }
+//    for (HotelsModel *model in [self.dataArray[indexPath.section] hotels]) {
+//        ReconmmendHotelTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"HotelTableViewCell" forIndexPath:indexPath];
+//        cell.hotelModel = model;
+//        cell.backgroundColor = [UIColor blueColor];
+//        return cell;
+//    }
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"cell"];
+    return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    
+    SectionHeadView *headView = [[SectionHeadView alloc] init];
+    return headView;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 60;
+}
+
+
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+/*
+#pragma mark - Navigation
+
+// In a storyboard-based application, you will often want to do a little preparation before navigation
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    // Get the new view controller using [segue destinationViewController].
+    // Pass the selected object to the new view controller.
+}
+*/
+
+@end

@@ -1,0 +1,39 @@
+//
+//  DateHelper.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "DateHelper.h"
+#import "NSDate+StringToDate.h"
+
+@implementation DateHelper
+
+#pragma mark--- 获取单例
++ (DateHelper *)sharedDateHelper
+{
+    static DateHelper *helper = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        helper = [[DateHelper alloc] init];
+    });
+    return helper;
+}
+
+#pragma mark--- 将“xxxx-xx-xx”的日期类型转换为“xxxx年xx月xx日”类型
+- (NSString *)getDateStringWithDateString:(NSString *)string
+{
+    NSDate *date = [NSDate dateWithDateString:string];
+    // 设置日期格式
+    NSDateFormatter *nsd = [[NSDateFormatter alloc] init];
+    [nsd setDateFormat:@"yyyy年MM月dd日"];
+    NSString *dateString = [nsd stringFromDate:date];
+    return dateString;
+}
+
+
+
+
+@end

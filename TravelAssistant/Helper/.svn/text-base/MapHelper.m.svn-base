@@ -1,0 +1,78 @@
+//
+//  MapHelper.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "MapHelper.h"
+#import <CoreLocation/CoreLocation.h>
+#import <MapKit/MapKit.h>
+
+@interface MapHelper ()<CLLocationManagerDelegate>
+
+@property (nonatomic, strong) CLLocationManager *locationManager; // 定位管理对象
+@property (nonatomic, strong) CLGeocoder *geocoder; // (反)编码对象
+@property (nonatomic, assign) CGFloat latitude;  // 纬度
+@property (nonatomic, assign) CGFloat longitude; // 经度
+
+@end
+
+@implementation MapHelper
+
+#pragma mark--- 获取单例
++ (MapHelper *)sharedMapHelper
+{
+    static MapHelper *helper = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        helper = [[MapHelper alloc] init];
+    });
+    return helper;
+}
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        // 创建定位管理对象
+        self.locationManager = [[CLLocationManager alloc] init];
+        
+        // CLLocationManager 实现是通过代理来实现实时定位的
+        self.locationManager.delegate = self;
+        
+        // 向系统申请定位权限
+        [self.locationManager requestAlwaysAuthorization];
+//            [self.locationManager requestWhenInUseAuthorization];
+        
+        // 开始定位
+        [self.locationManager startUpdatingLocation];
+        
+        // 创建一个地理(反)编码对象
+        self.geocoder = [[CLGeocoder alloc] init];
+    }
+    return self;
+}
+#pragma mark--- CLLocationManagerDelegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    self.latitude = [locations[0] coordinate].latitude;
+    self.longitude = [locations[0] coordinate].longitude;
+    // 为了省电，定位完毕后，关闭定位
+    [self.locationManager stopUpdatingLocation];
+}
+
+#pragma mark--- 获取当前所在城市纬度
+- (CGFloat)getLatitudeWithCurrentPosition
+{
+    return self.latitude;
+}
+#pragma mark--- 获取当前所在城市经度
+- (CGFloat)getLongitudeWithCurrentPosition
+{
+    return self.longitude;
+}
+
+
+
+@end

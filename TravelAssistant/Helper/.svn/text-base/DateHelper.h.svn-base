@@ -1,0 +1,20 @@
+//
+//  DateHelper.h
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/12.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface DateHelper : NSObject
+
+#pragma mark--- 获取单例
++ (DateHelper *)sharedDateHelper;
+
+#pragma mark--- 将“xxxx-xx-xx”的日期类型转换为“xxxx年xx月xx日”类型
+- (NSString *)getDateStringWithDateString:(NSString *)string;
+
+
+@end

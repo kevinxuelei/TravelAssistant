@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "58e7beb5-b28a-47a9-80d7-460340b3d733",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D19CBE38-8BFB-42DB-80CD-B24A181EC84A",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "58e7beb5-b28a-47a9-80d7-460340b3d733" : "TravelAssistant\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TravelAssistant",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TravelAssistant\/TravelAssistant.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/www.svnchina.com\/svn\/travelassistant",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "58e7beb5-b28a-47a9-80d7-460340b3d733"
+    }
+  ]
+}

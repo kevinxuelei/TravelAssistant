@@ -1,0 +1,21 @@
+//
+//  MainFoundModel.m
+//  TravelAssistant
+//
+//  Created by 吕世涛 on 15/11/13.
+//  Copyright © 2015年 王安贺. All rights reserved.
+//
+
+#import "MainFoundModel.h"
+
+@implementation MainFoundModel
+
+- (void)setValue:(id)value forUndefinedKey:(NSString *)key
+{
+    if ([key isEqualToString:@"info_desc"]) {
+        NSArray *arr = value;
+        _info_desc_string = [arr componentsJoinedByString:@" > "];
+    }
+}
+
+@end

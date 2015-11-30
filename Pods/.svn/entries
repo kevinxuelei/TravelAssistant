@@ -1,0 +1,86 @@
+10
+
+dir
+47
+http://group0403@www.svnchina.com/svn/travelassistant/TravelAssistant/Pods
+http://group0403@www.svnchina.com/svn/travelassistant
+
+
+
+2015-11-14T10:35:06.163896Z
+41
+group0403
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+58e7beb5-b28a-47a9-80d7-460340b3d733
+
+Pods.xcodeproj
+dir
+
+MBProgressHUD
+dir
+
+MJRefresh
+dir
+
+Target Support Files
+dir
+
+SDWebImage
+dir
+
+Headers
+dir
+
+Local Podspecs
+dir
+
+Manifest.lock
+file
+
+
+
+
+2015-11-14T10:35:34.000000Z
+46e36d0373d42328c6147399f15d1232
+2015-11-14T10:35:06.163896Z
+41
+group0403
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1225
+
+AFNetworking
+dir
+

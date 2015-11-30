@@ -1,0 +1,57 @@
+PODS:
+  - AFNetworking (2.6.3):
+    - AFNetworking/NSURLConnection (= 2.6.3)
+    - AFNetworking/NSURLSession (= 2.6.3)
+    - AFNetworking/Reachability (= 2.6.3)
+    - AFNetworking/Security (= 2.6.3)
+    - AFNetworking/Serialization (= 2.6.3)
+    - AFNetworking/UIKit (= 2.6.3)
+  - AFNetworking/NSURLConnection (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.6.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.6.3)
+  - AFNetworking/Security (2.6.3)
+  - AFNetworking/Serialization (2.6.3)
+  - AFNetworking/UIKit (2.6.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - AVOSCloud (3.1.6.2)
+  - AVOSCloudCrashReporting (3.1.6.2):
+    - AVOSCloud
+  - AVOSCloudIM (3.1.6.2):
+    - AVOSCloud
+  - LeanCloudSocial (0.0.7):
+    - AFNetworking (~> 2.0)
+    - AVOSCloud (~> 3.1)
+  - MBProgressHUD (0.9.1)
+  - MJRefresh (3.0.1)
+  - SDWebImage (3.7.3):
+    - SDWebImage/Core (= 3.7.3)
+  - SDWebImage/Core (3.7.3)
+
+DEPENDENCIES:
+  - AFNetworking
+  - AVOSCloud
+  - AVOSCloudCrashReporting
+  - AVOSCloudIM
+  - LeanCloudSocial
+  - MBProgressHUD
+  - MJRefresh
+  - SDWebImage
+
+SPEC CHECKSUMS:
+  AFNetworking: cb8d14a848e831097108418f5d49217339d4eb60
+  AVOSCloud: a3cd4fd18e2eba50de63c490cbd59fd8892fddee
+  AVOSCloudCrashReporting: 02172af07dc4685f01151c95ef158b0995ec2056
+  AVOSCloudIM: c19bdeae29803936301b3501f05b40fa107f6370
+  LeanCloudSocial: a20bb54efe77e66263d9943609a36896989af175
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MJRefresh: ca22bb7197c4a17a0491763773cd5cb106b2a810
+  SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+
+COCOAPODS: 0.39.0
